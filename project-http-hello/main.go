@@ -12,6 +12,5 @@ func main() {
 }
 
 func yourFunction(w http.ResponseWriter, r *http.Request){
-	name := r.URL.Query().Get("name")
-	fmt.Fprint(w, "Hello my name is ", name)
+	fmt.Fprint(w, "Hello, ", r.URL.Query().Get("name"))
 }
