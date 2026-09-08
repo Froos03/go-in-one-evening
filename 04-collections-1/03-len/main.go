@@ -9,3 +9,11 @@ func main() {
 	fmt.Println(NumberOfColors(), colors)
 	fmt.Println(NumberOfSystems(), systems)
 }
+
+func NumberOfColors() int {
+	return len(colors)
+}
+
+func NumberOfSystems() int {
+	return len(systems)
+}
