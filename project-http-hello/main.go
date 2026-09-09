@@ -12,10 +12,11 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	param := r.URL.Query().Get("name")
-	if param == ""{
+	name := r.URL.Query().Get("name")
+	if name == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	fmt.Fprint(w, "Hello, ", param)
+
+	fmt.Fprintf(w, "Hello, %s", name)
 }
