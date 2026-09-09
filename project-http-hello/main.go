@@ -12,5 +12,10 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, ", r.URL.Query().Get("name"))
+	param := r.URL.Query().Get("name")
+	if param == ""{
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	fmt.Fprint(w, "Hello, ", param)
 }
