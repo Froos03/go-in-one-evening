@@ -1,16 +1,16 @@
 package main
 
 import (
-	"net/http"
-	"log"
 	"fmt"
+	"log"
+	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/hello", yourFunction)
-	log.Fatal(http.ListenAndServe(":8080",nil))
+	http.HandleFunc("/hello", hello)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func yourFunction(w http.ResponseWriter, r *http.Request){
+func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello, ", r.URL.Query().Get("name"))
 }
