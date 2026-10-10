@@ -7,8 +7,8 @@ import (
 
 func main() {
 	if _, err := os.Stat("analysis.xlsx"); err != nil {
-		fmt.Printf(err.Error())
-		return
+		fmt.Println(err)
+	} else {
+		fmt.Println("ok")
 	}
-	fmt.Printf("ok")
 }
