@@ -18,18 +18,18 @@ func main() {
 	fmt.Println("Product names:", names)
 }
 
-func Values(v map[int]string) []string {
-	var values []string
-	for _, value := range v {
-		values = append(values, value)
-	}
-	return values
-}
-
-func Keys(k map[int]string) []int {
+func Keys(m map[int]string) []int {
 	var keys []int
-	for key := range k {
-		keys = append(keys, key)
+	for k := range m {
+		keys = append(keys, k)
 	}
 	return keys
+}
+
+func Values(m map[int]string) []string {
+	var values []string
+	for _, v := range m {
+		values = append(values, v)
+	}
+	return values
 }
