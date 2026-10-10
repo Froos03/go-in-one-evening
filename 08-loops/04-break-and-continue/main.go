@@ -1,7 +1,19 @@
 package main
 
+import "strings"
+
 func CountCreatedEvents(events []string) int {
-	return 0
+	var count int
+	for _, event := range events {
+		if strings.HasSuffix(event, "_deleted") {
+			break
+		}
+		if !strings.HasSuffix(event, "_created") {
+			continue
+		}
+		count++
+	}
+	return count
 }
 
 func main() {
