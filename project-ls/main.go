@@ -8,15 +8,14 @@ import (
 )
 
 func main() {
-	fileNames := listFiles("testdata")
-	fmt.Println(strings.Join(fileNames, " "))
+	files := listFiles("testdata")
+	fmt.Println(strings.Join(files, " "))
 }
 
 func listFiles(dirname string) []string {
 	var dirs []string
 
 	files, err := os.ReadDir(dirname)
-
 	if err != nil {
 		log.Fatal(err)
 	}
