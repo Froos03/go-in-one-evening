@@ -1,19 +1,13 @@
 package main
 
 func DebugLog(args ...string) []string {
-	prependedMessage := []string{"[DEBUG]"}
-	messages := append(prependedMessage, args...)
-	return messages
+	return append([]string{"[DEBUG]"}, args...)
 }
 
 func InfoLog(args ...string) []string {
-	prependedMessage := []string{"[INFO]"}
-	messages := append(prependedMessage, args...)
-	return messages
+	return append([]string{"[INFO]"}, args...)
 }
 
 func ErrorLog(args ...string) []string {
-	prependedMessage := []string{"[ERROR]"}
-	messages := append(prependedMessage, args...)
-	return messages
+	return append([]string{"[ERROR]"}, args...)
 }
