@@ -17,3 +17,19 @@ func main() {
 	fmt.Println("Prouct IDs:", ids)
 	fmt.Println("Product names:", names)
 }
+
+func Values(v map[int]string) []string {
+	var values []string
+	for _, value := range v {
+		values = append(values, value)
+	}
+	return values
+}
+
+func Keys(k map[int]string) []int {
+	var keys []int
+	for key := range k {
+		keys = append(keys, key)
+	}
+	return keys
+}
