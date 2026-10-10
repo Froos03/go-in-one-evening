@@ -2,7 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
+
+func CheckFile(file string) bool {
+	_, err := os.ReadFile(file)
+	if err != nil {
+		return false
+	}
+	return true
+}
 
 func main() {
 	ok := CheckFile("input.csv")
