@@ -7,8 +7,8 @@ import (
 func main() {
 	addresses := []string{
 		"127.0.0.1",
-		"10.0.0.0",
-		"10.0.0.0",
+		"10.0.0.1",
+		"10.0.0.1",
 		"127.0.0.1",
 		"10.0.0.2",
 	}
@@ -17,10 +17,10 @@ func main() {
 	fmt.Println(addresses)
 }
 
-func Deduplicate(add *[]string) {
+func Deduplicate(addresses *[]string) {
 	m := map[string]bool{}
 
-	for _, a := range *add {
+	for _, a := range *addresses {
 		m[a] = true
 	}
 
@@ -28,5 +28,6 @@ func Deduplicate(add *[]string) {
 	for k := range m {
 		keys = append(keys, k)
 	}
-	*add = keys
+
+	*addresses = keys
 }
