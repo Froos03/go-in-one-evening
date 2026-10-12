@@ -2,8 +2,14 @@ package main
 
 import "fmt"
 
+var count int = 0
+
 func AllocateBuffer() *string {
-	return nil
+	if count == 3{
+		return nil
+	}
+	count++
+	return new(string)
 }
 
 func main() {
@@ -11,7 +17,7 @@ func main() {
 
 	for {
 		b := AllocateBuffer()
-		if b == nil {
+		if b == nil{
 			break
 		}
 
