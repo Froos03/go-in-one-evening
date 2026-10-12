@@ -17,3 +17,7 @@ type Rectangle struct {
 	Width  int
 	Length int
 }
+
+func (r Rectangle) Area() int {
+	return r.Width * r.Length
+}
