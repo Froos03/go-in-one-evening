@@ -2,13 +2,13 @@ package main
 
 import "fmt"
 
-type Order struct {
-	Products []int
+type User struct {
+	Name   string
+	Orders []*Order
 }
 
-type User struct{
-	Name string
-	Orders []*Order
+type Order struct {
+	Products []int
 }
 
 func main() {
