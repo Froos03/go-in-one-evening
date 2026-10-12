@@ -13,6 +13,10 @@ func main() {
 	fmt.Println("Area:", area)
 }
 
+func Area(rect Rectangle) int {
+	return rect.Length * rect.Width
+}
+
 type Rectangle struct {
 	Width  int
 	Length int
