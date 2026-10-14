@@ -7,42 +7,49 @@ import (
 )
 
 type DateRange struct {
-	Start time.Time
-	End   time.Time
+	start time.Time
+	end   time.Time
+}
+
+func NewDateRange(start time.Time, end time.Time) (DateRange, error) {
+	if start.IsZero() {
+		return DateRange{}, errors.New("empty start")
+	}
+	if end.IsZero() {
+		return DateRange{}, errors.New("empty end")
+	}
+	if end.Before(start) {
+		return DateRange{}, errors.New("end before start")
+	}
+
+	return DateRange{
+		start: start,
+		end:   end,
+	}, nil
 }
 
 func (d DateRange) Hours() float64 {
-	return d.End.Sub(d.Start).Hours()
-}
-
-func NewDateRange(start, end time.Time) (DateRange, error) {
-	if start.IsZero() || end.IsZero() {
-		return DateRange{}, errors.New("Start or End Date cannot be empty")
-	}
-	if end.Before(start) {
-		return DateRange{}, errors.New("End Date cannot be before Start Date")
-	}
-	return DateRange{
-		Start: start,
-		End:   end,
-	}, nil
+	return d.end.Sub(d.start).Hours()
 }
 
 func main() {
 	lifetime, err := NewDateRange(
 		time.Date(1815, 12, 10, 0, 0, 0, 0, time.UTC),
-		time.Date(1852, 11, 27, 0, 0, 0, 0, time.UTC))
-
-	if err != nil {
-		fmt.Println(lifetime.Hours())
-	}
-
-	travelInTime, err2 := NewDateRange(
 		time.Date(1852, 11, 27, 0, 0, 0, 0, time.UTC),
-		time.Date(1815, 12, 10, 0, 0, 0, 0, time.UTC))
-
-	if err2 != nil {
-		fmt.Println(travelInTime.Hours())
+	)
+	if err != nil {
+		panic(err)
 	}
 
+	fmt.Println(lifetime.Hours())
+
+	travelInTime, err := NewDateRange(
+		time.Date(1852, 11, 27, 0, 0, 0, 0, time.UTC),
+		time.Date(1815, 12, 10, 0, 0, 0, 0, time.UTC),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(travelInTime.Hours())
 }
