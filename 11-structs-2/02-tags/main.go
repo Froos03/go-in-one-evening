@@ -7,9 +7,9 @@ import (
 )
 
 type Event struct {
-	ID         string
-	Name       string
-	OccurredAt time.Time
+	ID         string    `json:"id"`
+	Name       string    `json:"name"`
+	OccurredAt time.Time `json:"occurred_at"`
 }
 
 func main() {
