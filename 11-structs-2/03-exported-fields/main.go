@@ -7,13 +7,13 @@ import (
 
 type Account struct {
 	Name     string `json:"name"`
-	Password string `json:"password"`
+	password string `json:"password"`
 }
 
 func main() {
 	account := Account{
 		Name:     "John",
-		Password: "top-secret",
+		password: "top-secret",
 	}
 
 	marshaled, err := json.Marshal(account)
