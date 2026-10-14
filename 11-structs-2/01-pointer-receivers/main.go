@@ -5,7 +5,7 @@ type Position struct {
 	Y int
 }
 
-func (p *Position) Move(dx, dy int){
+func (p *Position) Move(dx int, dy int) {
 	p.X += dx
 	p.Y += dy
 }
