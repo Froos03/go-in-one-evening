@@ -2,26 +2,25 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 )
+
+var id = 0
 
 func main() {
 	http.HandleFunc("/tweets", addTweet)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-var counter int = 0
-
 type tweet struct {
 	Message  string `json:"message"`
 	Location string `json:"location"`
 }
 
-type tweetResponse struct{
-	ID int
+type response struct {
+	ID int `json:"ID"`
 }
 
 func addTweet(w http.ResponseWriter, r *http.Request) {
@@ -46,17 +45,18 @@ func addTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("Tweet: `%s` from %s\n", tw.Message, tw.Location)
+	id++
 
-	tr:=tweetResponse{}
-	counter++
-	tr.ID = counter
+	resp := response{
+		ID: id,
+	}
 
-	payload, err := json.Marshal(&tr)
+	respJSON, err := json.Marshal(resp)
 	if err != nil {
-		log.Println("Failed to marshal:", err)
+		log.Printf("Failed to marshal: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprint(w, payload)
+
+	w.Write(respJSON)
 }
