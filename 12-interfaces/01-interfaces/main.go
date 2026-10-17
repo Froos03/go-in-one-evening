@@ -1,11 +1,11 @@
 package main
 
-type Storage interface{
-	Store(user User)
-}
-
 type User struct {
 	Name string
+}
+
+type Storage interface {
+	Store(User)
 }
 
 func NewUser(name string, storage Storage) User {
