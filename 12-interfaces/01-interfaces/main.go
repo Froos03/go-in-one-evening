@@ -1,10 +1,14 @@
 package main
 
+type Storage interface{
+	Store(user User)
+}
+
 type User struct {
 	Name string
 }
 
-func NewUser(name string, storage MapStorage) User {
+func NewUser(name string, storage Storage) User {
 	user := User{Name: name}
 	storage.Store(user)
 	return user
