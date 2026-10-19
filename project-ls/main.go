@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -21,8 +22,11 @@ func listFiles(dirname string) []string {
 		log.Fatal(err)
 	}
 
+	showAll := flag.Bool("a", false, "show hidden files")
+	flag.Parse()
+
 	for _, f := range files {
-		if strings.HasPrefix(f.Name(), ".") {
+		if !*showAll && strings.HasPrefix(f.Name(), ".") {
 			continue
 		}
 
