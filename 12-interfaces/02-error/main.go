@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type User struct {
 	ID   int
@@ -13,12 +11,12 @@ type UserNotFoundError struct {
 	ID int
 }
 
-type MemoryStorage struct {
-	users []User
+func (e UserNotFoundError) Error() string {
+	return fmt.Sprintf("user not found: %v", e.ID)
 }
 
-func (u UserNotFoundError) Error() string {
-	return fmt.Sprintf("user not found: %d", u.ID)
+type MemoryStorage struct {
+	users []User
 }
 
 func (m MemoryStorage) FindUser(id int) (User, error) {
