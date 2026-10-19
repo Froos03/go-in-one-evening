@@ -9,12 +9,16 @@ import (
 )
 
 func main() {
-	for _, file := range listFiles("testdata") {
+	all := flag.Bool("a", false, "show all")
+	flag.Parse()
+
+	for _, file := range listFiles("testdata", *all) {
 		fmt.Println(file)
 	}
 }
 
-func listFiles(dirname string) []string {
+// listFiles returns the names of files in the given directory.
+func listFiles(dirname string, all bool) []string {
 	var dirs []string
 
 	files, err := os.ReadDir(dirname)
@@ -22,11 +26,8 @@ func listFiles(dirname string) []string {
 		log.Fatal(err)
 	}
 
-	showAll := flag.Bool("a", false, "show hidden files")
-	flag.Parse()
-
 	for _, f := range files {
-		if !*showAll && strings.HasPrefix(f.Name(), ".") {
+		if !all && strings.HasPrefix(f.Name(), ".") {
 			continue
 		}
 
