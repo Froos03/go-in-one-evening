@@ -12,7 +12,7 @@ func main() {
 		tweetsRepository: &tweetsMemoryRepository{},
 	}
 
-	http.HandleFunc("/tweets", s.addTweet)
+	http.HandleFunc("/tweets", s.Tweets)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -21,25 +21,59 @@ type tweet struct {
 	Location string `json:"location"`
 }
 
-type response struct {
+type tweetsList struct {
+	Tweets []tweet `json:"tweets"`
+}
+
+type addResponse struct {
 	ID int `json:"ID"`
 }
 
 type tweetsRepository interface {
 	AddTweet(t tweet) (int, error)
+	ReadTweets() ([]tweet, error)
 }
 
 type tweetsMemoryRepository struct {
-	tweets []tweet
+	Tweets []tweet
+}
+
+func (t *tweetsMemoryRepository) ReadTweets() ([]tweet, error) {
+	return t.Tweets, nil
 }
 
 func (t *tweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
-	t.tweets = append(t.tweets, tw)
-	return len(t.tweets), nil
+	t.Tweets = append(t.Tweets, tw)
+	return len(t.Tweets), nil
 }
 
 type server struct {
 	tweetsRepository tweetsRepository
+}
+
+func (s server) Tweets(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		s.addTweet(w, r)
+	} else if r.Method == http.MethodGet {
+		s.listTweets(w, r)
+	}
+}
+
+func (s server) listTweets(w http.ResponseWriter, r *http.Request) {
+	t, err := s.tweetsRepository.ReadTweets()
+	if err != nil {
+		log.Println("Failed to read tweets from repository: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	resp := tweetsList{Tweets: t}
+
+	respJSON, err := json.Marshal(resp)
+	if err != nil {
+		log.Println("Failed to marshal payload: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	w.Write(respJSON)
 }
 
 func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
@@ -71,7 +105,7 @@ func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := response{
+	resp := addResponse{
 		ID: id,
 	}
 
