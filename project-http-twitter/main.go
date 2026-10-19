@@ -2,16 +2,30 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 )
 
-var id = 0
-
 func main() {
-	http.HandleFunc("/tweets", addTweet)
+	s := server{
+		tweetsRepository: &tweetsMemoryRepository{},
+	}
+	http.HandleFunc("/tweets", s.addTweet)
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+type server struct {
+	tweetsRepository tweetsRepository
+}
+
+type tweetsRepository interface {
+	AddTweet(t tweet) (int, error)
+}
+
+type tweetsMemoryRepository struct {
+	tweets []tweet
 }
 
 type tweet struct {
@@ -19,11 +33,16 @@ type tweet struct {
 	Location string `json:"location"`
 }
 
-type response struct {
-	ID int `json:"ID"`
+type tweetResponse struct {
+	ID int
 }
 
-func addTweet(w http.ResponseWriter, r *http.Request) {
+func (t *tweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
+	t.tweets = append(t.tweets, tw)
+	return len(t.tweets), nil
+}
+
+func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Failed to read body: %s", err)
@@ -45,18 +64,21 @@ func addTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id++
+	fmt.Printf("Tweet: `%s` from %s\n", tw.Message, tw.Location)
 
-	resp := response{
-		ID: id,
-	}
-
-	respJSON, err := json.Marshal(resp)
+	tr := tweetResponse{}
+	id, err := s.tweetsRepository.AddTweet(tw)
 	if err != nil {
-		log.Printf("Failed to marshal: %s", err)
+		log.Println("Failed to add tweet:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	tr.ID = id
+
+	payload, err := json.Marshal(&tr)
+	if err != nil {
+		log.Println("Failed to marshal:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	w.Write(respJSON)
+	w.Write(payload)
 }
