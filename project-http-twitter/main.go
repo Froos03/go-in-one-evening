@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -12,12 +11,18 @@ func main() {
 	s := server{
 		tweetsRepository: &tweetsMemoryRepository{},
 	}
+
 	http.HandleFunc("/tweets", s.addTweet)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-type server struct {
-	tweetsRepository tweetsRepository
+type tweet struct {
+	Message  string `json:"message"`
+	Location string `json:"location"`
+}
+
+type response struct {
+	ID int `json:"ID"`
 }
 
 type tweetsRepository interface {
@@ -28,18 +33,13 @@ type tweetsMemoryRepository struct {
 	tweets []tweet
 }
 
-type tweet struct {
-	Message  string `json:"message"`
-	Location string `json:"location"`
-}
-
-type tweetResponse struct {
-	ID int
-}
-
 func (t *tweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
 	t.tweets = append(t.tweets, tw)
 	return len(t.tweets), nil
+}
+
+type server struct {
+	tweetsRepository tweetsRepository
 }
 
 func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
@@ -64,21 +64,23 @@ func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("Tweet: `%s` from %s\n", tw.Message, tw.Location)
-
-	tr := tweetResponse{}
 	id, err := s.tweetsRepository.AddTweet(tw)
 	if err != nil {
-		log.Println("Failed to add tweet:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-	}
-	tr.ID = id
-
-	payload, err := json.Marshal(&tr)
-	if err != nil {
-		log.Println("Failed to marshal:", err)
+		log.Printf("Failed to add tweet: %s", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Write(payload)
+
+	resp := response{
+		ID: id,
+	}
+
+	respJSON, err := json.Marshal(resp)
+	if err != nil {
+		log.Printf("Failed to marshal: %s", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(respJSON)
 }
