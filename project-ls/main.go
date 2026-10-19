@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	files := listFiles("testdata")
-	for _, file := range files {
+	for _, file := range listFiles("testdata") {
 		fmt.Println(file)
 	}
 }
@@ -23,9 +22,11 @@ func listFiles(dirname string) []string {
 	}
 
 	for _, f := range files {
-		if !strings.HasPrefix(f.Name(), ".") {
-			dirs = append(dirs, f.Name())
+		if strings.HasPrefix(f.Name(), ".") {
+			continue
 		}
+
+		dirs = append(dirs, f.Name())
 	}
 
 	return dirs
