@@ -17,6 +17,15 @@ func main() {
 }
 
 func Execute(f func() error, metrics *Metrics) (err error) {
+	metrics.StoreExecution()
+	defer func() {
+		if err == nil {
+			metrics.StoreSuccess()
+		} else {
+			metrics.StoreFailure()
+		}
+	}()
+	return f()
 }
 
 type Metrics struct {
