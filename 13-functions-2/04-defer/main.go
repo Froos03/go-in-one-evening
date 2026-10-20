@@ -18,6 +18,7 @@ func main() {
 
 func Execute(f func() error, metrics *Metrics) (err error) {
 	metrics.StoreExecution()
+
 	defer func() {
 		if err == nil {
 			metrics.StoreSuccess()
@@ -25,6 +26,7 @@ func Execute(f func() error, metrics *Metrics) (err error) {
 			metrics.StoreFailure()
 		}
 	}()
+
 	return f()
 }
 
