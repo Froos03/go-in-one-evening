@@ -51,9 +51,9 @@ type server struct {
 
 func (s server) tweetsEndpoint(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
+
 	defer func() {
-		duration := time.Since(start)
-		fmt.Printf("%s %s %s\n", r.Method, r.URL, duration)
+		fmt.Printf("%s %s %s\n", r.Method, r.URL, time.Since(start))
 	}()
 
 	if r.Method == http.MethodPost {
