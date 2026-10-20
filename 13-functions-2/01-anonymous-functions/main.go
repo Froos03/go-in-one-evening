@@ -2,10 +2,15 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
 	planets := []string{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"}
+
+	uppercase:= func (s string) string  {
+		return strings.ToUpper(s)
+	}
 
 	uppercasePlanets := MapValues(planets, uppercase)
 	fmt.Println(uppercasePlanets)
