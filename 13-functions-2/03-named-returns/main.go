@@ -20,5 +20,6 @@ func DirectionFromNumber(number int) (direction string) {
 	default:
 		direction = "invalid"
 	}
+
 	return
 }
