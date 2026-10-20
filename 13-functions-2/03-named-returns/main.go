@@ -7,7 +7,7 @@ func main() {
 	fmt.Println(DirectionFromNumber(3))
 }
 
-func DirectionFromNumber(number int) string {
+func DirectionFromNumber(number int) (direction string) {
 	switch number {
 	case 0:
 		direction = "up"
@@ -20,4 +20,5 @@ func DirectionFromNumber(number int) string {
 	default:
 		direction = "invalid"
 	}
+	return
 }
