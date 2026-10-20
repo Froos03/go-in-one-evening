@@ -3,14 +3,15 @@ package main
 import "fmt"
 
 func WordGenerator(words []string) func() string {
-	var word string
-	index := 0
+	i := 0
 	return func() string {
-		if index == len(words) {
-			index = 0
+		word := words[i]
+
+		i++
+		if i >= len(words) {
+			i = 0
 		}
-		word = words[index]
-		index++
+
 		return word
 	}
 }
