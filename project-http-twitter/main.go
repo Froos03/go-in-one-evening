@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -48,6 +50,12 @@ type server struct {
 }
 
 func (s server) tweetsEndpoint(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		duration := time.Since(start)
+		fmt.Printf("%s %s %s\n", r.Method, r.URL, duration)
+	}()
+
 	if r.Method == http.MethodPost {
 		s.addTweet(w, r)
 	} else {
