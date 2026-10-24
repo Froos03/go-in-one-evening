@@ -1,3 +1,6 @@
 go 1.25.6
 
-use ./14-packages/02-packages
+use (
+	./14-packages/02-packages
+	./14-packages/03-exported-symbols
+)
