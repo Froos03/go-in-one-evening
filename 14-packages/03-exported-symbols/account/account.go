@@ -8,12 +8,12 @@ var (
 )
 
 type Account struct {
-	Email    string
-	Password string
+	email    string
+	password string
 }
 
 func (a Account) Login(email string, password string) bool {
-	return a.Email == email && a.Password == password
+	return a.email == email && a.password == password
 }
 
 func New(email string, password string) (Account, error) {
@@ -26,7 +26,7 @@ func New(email string, password string) (Account, error) {
 	}
 
 	return Account{
-		Email:    email,
-		Password: password,
+		email:    email,
+		password: password,
 	}, nil
 }
