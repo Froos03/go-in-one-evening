@@ -9,10 +9,6 @@ import (
 	"time"
 )
 
-type Server struct {
-	TweetsRepository tweetsRepository
-}
-
 type tweet struct {
 	Message  string `json:"message"`
 	Location string `json:"location"`
@@ -22,22 +18,8 @@ type response struct {
 	ID int `json:"ID"`
 }
 
-type tweetsRepository interface {
-	AddTweet(t tweet) (int, error)
-	Tweets() ([]tweet, error)
-}
-
-type TweetsMemoryRepository struct {
-	tweets []tweet
-}
-
-func (t *TweetsMemoryRepository) Tweets() ([]tweet, error) {
-	return t.tweets, nil
-}
-
-func (t *TweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
-	t.tweets = append(t.tweets, tw)
-	return len(t.tweets), nil
+type Server struct {
+	TweetsRepository tweetsRepository
 }
 
 func (s Server) TweetsEndpoint(w http.ResponseWriter, r *http.Request) {

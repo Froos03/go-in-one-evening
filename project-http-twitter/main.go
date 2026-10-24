@@ -1,9 +1,10 @@
 package main
 
 import (
-	"twitter/server"
 	"log"
 	"net/http"
+
+	"twitter/server"
 )
 
 func main() {
