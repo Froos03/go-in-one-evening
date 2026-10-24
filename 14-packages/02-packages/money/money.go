@@ -5,6 +5,9 @@ type Money struct {
 	Currency string
 }
 
-func New(a int, c string) Money {
-	return Money{Amount: a, Currency: c}
+func New(amount int, currency string) Money {
+	return Money{
+		Amount:   amount,
+		Currency: currency,
+	}
 }
