@@ -2,11 +2,9 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 type tweet struct {
@@ -22,21 +20,7 @@ type Server struct {
 	TweetsRepository tweetsRepository
 }
 
-func (s Server) TweetsEndpoint(w http.ResponseWriter, r *http.Request) {
-	start := time.Now()
-
-	defer func() {
-		fmt.Printf("%s %s %s\n", r.Method, r.URL, time.Since(start))
-	}()
-
-	if r.Method == http.MethodPost {
-		s.addTweet(w, r)
-	} else {
-		s.listTweets(w, r)
-	}
-}
-
-func (s Server) addTweet(w http.ResponseWriter, r *http.Request) {
+func (s Server) AddTweet(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("Failed to read body: %s", err)
@@ -83,7 +67,7 @@ type tweetsList struct {
 	Tweets []tweet `json:"tweets"`
 }
 
-func (s Server) listTweets(w http.ResponseWriter, r *http.Request) {
+func (s Server) ListTweets(w http.ResponseWriter, r *http.Request) {
 	tweets, err := s.TweetsRepository.Tweets()
 	if err != nil {
 		log.Printf("Failed to get tweets: %s", err)
