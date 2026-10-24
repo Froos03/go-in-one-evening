@@ -12,8 +12,8 @@ func main() {
 }
 
 func SignUp(email string) {
-	SaveUser(email)
-	SendNotification(email)
+	go SaveUser(email)
+	go SendNotification(email)
 }
 
 func SaveUser(email string) {
