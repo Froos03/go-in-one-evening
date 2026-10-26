@@ -34,5 +34,6 @@ func SendNewsletterToEmail(email string, done chan bool) {
 	fmt.Println("Sending newsletter to", email)
 
 	time.Sleep(time.Second)
+
 	done <- true
 }
