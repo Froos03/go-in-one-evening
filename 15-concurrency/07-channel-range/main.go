@@ -19,9 +19,11 @@ func SendMessages(count int, messages chan<- string) {
 }
 
 func ReadMessages(messages <-chan string) []string {
-	var read []string
-	for message := range messages {
-		read = append(read, message)
+	var result []string
+
+	for m := range messages {
+		result = append(result, m)
 	}
-	return read
+
+	return result
 }
