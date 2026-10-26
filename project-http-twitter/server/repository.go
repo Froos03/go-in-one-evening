@@ -3,23 +3,23 @@ package server
 import "sync"
 
 type tweetsRepository interface {
-	AddTweet(t tweet) (int, error)
-	Tweets() ([]tweet, error)
+	AddTweet(t Tweet) (int, error)
+	Tweets() ([]Tweet, error)
 }
 
 type TweetsMemoryRepository struct {
-	tweets     []tweet
+	tweets     []Tweet
 	tweetsLock sync.RWMutex
 }
 
-func (t *TweetsMemoryRepository) Tweets() ([]tweet, error) {
+func (t *TweetsMemoryRepository) Tweets() ([]Tweet, error) {
 	t.tweetsLock.RLock()
 	defer t.tweetsLock.RUnlock()
 
 	return t.tweets, nil
 }
 
-func (t *TweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
+func (t *TweetsMemoryRepository) AddTweet(tw Tweet) (int, error) {
 	t.tweetsLock.Lock()
 	defer t.tweetsLock.Unlock()
 

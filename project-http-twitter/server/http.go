@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type tweet struct {
+type Tweet struct {
 	Message  string `json:"message"`
 	Location string `json:"location"`
 }
@@ -29,7 +29,7 @@ func (s Server) AddTweet(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	tw := tweet{}
+	tw := Tweet{}
 
 	if err := json.Unmarshal(body, &tw); err != nil {
 		log.Printf("Failed to unmarshal payload: %s", err)
@@ -64,7 +64,7 @@ func (s Server) AddTweet(w http.ResponseWriter, r *http.Request) {
 }
 
 type tweetsList struct {
-	Tweets []tweet `json:"tweets"`
+	Tweets []Tweet `json:"tweets"`
 }
 
 func (s Server) ListTweets(w http.ResponseWriter, r *http.Request) {
