@@ -1,8 +1,9 @@
 package main
 
 import (
-	"errors"
 	"time"
+
+	"errors"
 )
 
 func main() {
@@ -21,7 +22,6 @@ func RunWithTimeout(f func(chan error)) error {
 
 	select {
 	case err := <-errChan:
-
 		return err
 	case <-time.After(time.Second):
 		return errors.New("timeout")
