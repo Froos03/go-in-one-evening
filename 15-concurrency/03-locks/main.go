@@ -5,18 +5,20 @@ import (
 	"time"
 )
 
+var lock sync.Mutex
+
 type User struct {
 	Email string
 }
 
 type Storage struct {
 	users map[string]User
-	lock  sync.Mutex
 }
 
 func (s *Storage) AddUser(email string) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
+	lock.Lock()
+	defer lock.Unlock()
+
 	_, ok := s.users[email]
 	if !ok {
 		s.users[email] = User{Email: email}
