@@ -22,11 +22,13 @@ func main() {
 	}
 
 	r := chi.NewRouter()
-	authMiddleware := httprate.LimitByIP(10, time.Minute)
 
 	r.Use(middleware.Logger)
+
+	rateLimit := httprate.LimitByIP(10, 1*time.Minute)
+	r.With(rateLimit).Post("/tweets", s.AddTweet)
+
 	r.Get("/tweets", s.ListTweets)
-	r.With(authMiddleware).Post("/tweets", s.AddTweet)
 
 	go addTweets()
 
