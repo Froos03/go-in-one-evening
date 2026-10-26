@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"io"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+
 	"twitter/server"
 )
 
@@ -23,40 +26,46 @@ func main() {
 	r.Get("/tweets", s.ListTweets)
 	r.Post("/tweets", s.AddTweet)
 
-	go spamTweets()
+	go addTweets()
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
-func spamTweets() {
+func addTweets() {
 	for {
-		postRequest()
+		time.Sleep(time.Millisecond * 100)
+
+		addTweetPayload := server.Tweet{
+			Message:  "ass",
+			Location: "ass",
+		}
+
+		b, err := json.Marshal(addTweetPayload)
+		if err != nil {
+			panic(err)
+		}
+
+		resp, err := http.Post(""+
+			"http://localhost:8080"+"/tweets",
+			"application/json",
+			bytes.NewBuffer(b),
+		)
+		if err != nil {
+			panic(err)
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		respBody := server.Response{}
+
+		if err := json.Unmarshal(body, &respBody); err != nil {
+			log.Println(err)
+		} else {
+			fmt.Printf("Added tweet %d\n", respBody.ID)
+		}
 	}
-}
-
-func postRequest() {
-	addTweetPayload := server.Tweet{
-		Message:  "ass",
-		Location: "ass",
-	}
-
-	marshalledPayload, err := json.Marshal(addTweetPayload)
-	if err != nil {
-		log.Printf("Error in Marshalling the Pyaload")
-	}
-
-	url := "http://localhost:8080/tweets"
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(marshalledPayload))
-	if err != nil {
-		log.Printf("Error in Posting the Message")
-	}
-
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Printf("Error Reading the Body")
-	}
-
-	fmt.Print(string(body))
 }
