@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 
 	"twitter/server"
 )
@@ -21,10 +22,11 @@ func main() {
 	}
 
 	r := chi.NewRouter()
+	authMiddleware := httprate.LimitByIP(10, time.Minute)
 
 	r.Use(middleware.Logger)
 	r.Get("/tweets", s.ListTweets)
-	r.Post("/tweets", s.AddTweet)
+	r.With(authMiddleware).Post("/tweets", s.AddTweet)
 
 	go addTweets()
 
