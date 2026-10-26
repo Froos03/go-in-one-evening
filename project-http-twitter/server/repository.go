@@ -8,19 +8,21 @@ type tweetsRepository interface {
 }
 
 type TweetsMemoryRepository struct {
-	tweets []tweet
-	lock   sync.RWMutex
+	tweets     []tweet
+	tweetsLock sync.RWMutex
 }
 
 func (t *TweetsMemoryRepository) Tweets() ([]tweet, error) {
-	t.lock.RLock()
-	defer t.lock.RUnlock()
+	t.tweetsLock.RLock()
+	defer t.tweetsLock.RUnlock()
+
 	return t.tweets, nil
 }
 
 func (t *TweetsMemoryRepository) AddTweet(tw tweet) (int, error) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
+	t.tweetsLock.Lock()
+	defer t.tweetsLock.Unlock()
+
 	t.tweets = append(t.tweets, tw)
 	return len(t.tweets), nil
 }
