@@ -17,7 +17,7 @@ func main() {
 }
 
 func CalculatePayments(payments []int) (int, error) {
-	paymentsChan := make(chan int, 7)
+	paymentsChan := make(chan int, len(payments))
 	resultChan := make(chan int)
 
 	go Aggregate(paymentsChan, resultChan)
