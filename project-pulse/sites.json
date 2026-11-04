@@ -1,0 +1,3 @@
+[
+  {"name": "google", "url": "https://google.com", "expected_status": 200, "timeout_ms": 2000}
+]
