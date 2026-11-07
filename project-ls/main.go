@@ -17,7 +17,6 @@ func main() {
 	}
 }
 
-// listFiles returns the names of files in the given directory.
 func listFiles(dirname string, all bool) []string {
 	var dirs []string
 

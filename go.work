@@ -4,4 +4,5 @@ use (
 	./14-packages/02-packages
 	./14-packages/03-exported-symbols
 	./project-http-twitter
+	./project-pulse
 )
