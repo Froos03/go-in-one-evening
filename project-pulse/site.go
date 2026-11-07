@@ -1,4 +1,4 @@
-package projectpulse
+package main
 
 import (
 	"encoding/json"
@@ -27,7 +27,7 @@ func LoadSites(name string) ([]Site, error) {
 
 	for i := range sites {
 		if sites[i].Name == "" {
-			return nil, fmt.Errorf("load sites: name required")
+			return nil, fmt.Errorf("load sites: name required: site number %d", i)
 		}
 		if sites[i].URL == "" {
 			return nil, fmt.Errorf("load sites: url required for sites[%d]: %s", i, sites[i].Name)

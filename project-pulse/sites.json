@@ -1,3 +1,8 @@
 [
-  {"name": "google", "url": "https://google.com", "expected_status": 200, "timeout_ms": 2000}
+  {"name": "google", "url": "https://google.com", "expected_status": 200, "timeout_ms": 5000},
+  {"name": "github", "url": "https://github.com", "expected_status": 200, "timeout_ms": 5000},
+  {"name": "go-dev", "url": "https://go.dev", "timeout_ms": 5000},
+  {"name": "server-error", "url": "https://httpbin.org/status/500", "expected_status": 200, "timeout_ms": 3000},
+  {"name": "slow", "url": "https://httpbin.org/delay/3", "expected_status": 200, "timeout_ms": 1000},
+  {"name": "bad-domain", "url": "https://this-does-not-exist-xyz.com", "expected_status": 200, "timeout_ms": 2000}
 ]
